@@ -157,7 +157,8 @@ void Foam::sampledSurfaceElevation::gatherAllSets()
 
     const PtrList<sampledSet>& localSets = *this;
 
-    gatheredSets_.resize_null(localSets.size());
+    gatheredSets_.clear();
+    gatheredSets_.resize(localSets.size());
     gatheredSorting_.resize_nocopy(localSets.size());
     globalIndices_.resize_nocopy(localSets.size());
 
@@ -165,7 +166,7 @@ void Foam::sampledSurfaceElevation::gatherAllSets()
     {
         const coordSet& coords = localSets[seti];
 
-        globalIndices_[seti].reset(globalIndex::gatherOnly{}, coords.size());
+        globalIndices_[seti].reset(coords.size(), globalIndex::gatherOnly{});
         gatheredSets_.set(seti, coords.gatherSort(gatheredSorting_[seti]));
     }
 }
