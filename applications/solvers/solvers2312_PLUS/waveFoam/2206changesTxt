@@ -1,0 +1,91 @@
+============ BEGIN: alphaSuSp.H ============
+
+============= END: alphaSuSp.H =============
+
+============ BEGIN: correctPhi.H ============
+
+============= END: correctPhi.H =============
+
+============ BEGIN: createFields.H ============
+86,90c86,88
+< //#include "readGravitationalAcceleration.H"
+< //#include "readhRef.H"
+< //#include "gh.H"
+< volScalarField gh("gh", g & (mesh.C() - referencePoint));
+< surfaceScalarField ghf("ghf", g & (mesh.Cf() - referencePoint));
+---
+> #include "readGravitationalAcceleration.H"
+> #include "readhRef.H"
+> #include "gh.H"
+131,145d128
+< // MULES compressed flux is registered in case scalarTransport FO needs it.
+< /*surfaceScalarField alphaPhiUn
+< (
+<     IOobject
+<     (
+<         "alphaPhiUn",
+<         runTime.timeName(),
+<         mesh,
+<         IOobject::NO_READ,
+<         IOobject::NO_WRITE
+<     ),
+<     mesh,
+<     dimensionedScalar(phi.dimensions(), Zero)
+< );*/
+< 
+148,149d130
+< 
+< relaxationZone relaxing(mesh, U, alpha1);
+
+============= END: createFields.H =============
+
+============ BEGIN: initCorrectPhi.H ============
+
+============= END: initCorrectPhi.H =============
+
+============ BEGIN: pEqn.H ============
+
+============= END: pEqn.H =============
+
+============ BEGIN: rhofs.H ============
+
+============= END: rhofs.H =============
+
+============ BEGIN: UEqn.H ============
+
+============= END: UEqn.H =============
+
+============ BEGIN: waveFoam.C ============
+56,58d55
+< #include "relaxationZone.H"
+< #include "externalWaveForcing.H"
+< 
+71c68
+< //    #include "postProcess.H"
+---
+>     #include "postProcess.H"
+77,81d73
+< 
+<     #include "readGravitationalAcceleration.H"
+<     #include "readWaveProperties.H"
+<     #include "createExternalWaveForcing.H"
+< 
+117,118d108
+<         externalWave->step();
+< 
+135,136c125,126
+<                     gh = g & (mesh.C() - referencePoint);
+<                     ghf = g & (mesh.Cf() - referencePoint);
+---
+>                     gh = (g & mesh.C()) - ghRef;
+>                     ghf = (g & mesh.Cf()) - ghRef;
+164,165d153
+<             relaxing.correct();
+< 
+191,193d178
+< 
+<     // Close down the external wave forcing in a nice manner
+<     externalWave->close();
+
+============= END: waveFoam.C =============
+
